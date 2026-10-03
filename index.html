@@ -114,8 +114,6 @@ const CTA = {
         lTitle: 'Gift lists and invitations for every celebration', lSub: 'Make a beautiful invitation in a minute, send guests one link, and see who is coming and which gift they picked.',
         f: ['Guests reply without signing up', 'No duplicate gifts — everyone picks something different', 'Birthdays, weddings, housewarmings, New Year and more', 'In Azerbaijani, Russian and English'] },
 };
-const GREET = { az: (n) => `Salam, ${n}!`, ru: (n) => `Здравствуйте, ${n}!`, en: (n) => `Hi ${n}!` };
-const GREET_SUB = { az: 'Bu dəvətnamə sizin üçündür. Adınızı yoxlayın və cavab verin.', ru: 'Это приглашение для вас. Проверьте имя и ответьте.', en: 'This invitation is for you. Check your name and reply.' };
 const isAndroid = /android/i.test(navigator.userAgent || '');
 function storeLink() {
   const c = CTA[lang];
@@ -191,14 +189,11 @@ async function rpc(fn, args) {
 }
 
 // ---- State -------------------------------------------------------------------
-const qs = new URLSearchParams(location.search);
-const slug = qs.get('i') || '';
-// Personal link from the host's guest list: ?g=<name>. It pre-fills the name so the reply matches the host's list.
-const invited = (qs.get('g') || '').trim().slice(0, 80);
+const slug = new URLSearchParams(location.search).get('i') || '';
 const browserLang = (navigator.language || 'az').slice(0, 2);
 let lang = ['az', 'ru', 'en'].includes(browserLang) ? browserLang : 'az';
 let party = null;
-let st = { name: invited || store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], done: false, busy: false, error: '' };
+let st = { name: store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], done: false, busy: false, error: '' };
 
 function wordmark() {
   const cols = ['#C8402B', '#5B4BC4', '#1B6B47', '#B26A00', '#3A7BB8', '#C2416A', '#5B4BC4', '#C8402B'];
@@ -253,7 +248,6 @@ function render() {
     ${ctaCard(false)}`;
   } else {
     html += `<div class="card">
-      ${invited ? `<h2 style="margin-bottom:4px">${esc(GREET[lang](invited))}</h2><p class="muted" style="margin:0 0 10px">${esc(GREET_SUB[lang])}</p>` : ''}
       <label class="lbl" for="name">${esc(s.yourName)}</label>
       <input type="text" id="name" autocomplete="name" placeholder="${esc(s.yourNamePh)}" value="${esc(st.name)}">
     </div>
