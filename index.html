@@ -114,6 +114,18 @@ const CTA = {
         lTitle: 'Gift lists and invitations for every celebration', lSub: 'Make a beautiful invitation in a minute, send guests one link, and see who is coming and which gift they picked.',
         f: ['Guests reply without signing up', 'No duplicate gifts — everyone picks something different', 'Birthdays, weddings, housewarmings, New Year and more', 'In Azerbaijani, Russian and English'] },
 };
+const OWN = {
+  az: { allTaken: 'Siyahıdakı bütün hədiyyələr artıq seçilib. Başqa hədiyyə gətirə bilərsiniz — yazın ki, təkrarlanmasın.', check: 'Başqa hədiyyə gətirəcəyəm', label: 'Nə gətirəcəksiniz?', ph: 'Məs. kitab, puzzle, gül', need: 'Nə gətirəcəyinizi yazın', others: 'Digər qonaqlar gətirir' },
+  ru: { allTaken: 'Все подарки из списка уже выбраны. Вы можете принести свой — напишите какой, чтобы подарки не повторялись.', check: 'Принесу другой подарок', label: 'Что вы принесёте?', ph: 'Напр. книгу, пазл, цветы', need: 'Напишите, что принесёте', others: 'Другие гости принесут' },
+  en: { allTaken: 'Every gift on the list is taken. You can bring something else — write what, so gifts don\'t repeat.', check: "I'll bring a different gift", label: 'What will you bring?', ph: 'e.g. a book, a puzzle, flowers', need: 'Write what you will bring', others: 'Other guests are bringing' },
+};
+const OTHER = {
+  az: { as: (n) => `Cavab verən: ${n}`, btn: 'Başqa qonaq kimi cavab ver' },
+  ru: { as: (n) => `Ответ от: ${n}`, btn: 'Ответить за другого гостя' },
+  en: { as: (n) => `Replied as ${n}`, btn: 'Reply as another guest' },
+};
+const GREET = { az: (n) => `Salam, ${n}!`, ru: (n) => `Здравствуйте, ${n}!`, en: (n) => `Hi ${n}!` };
+const GREET_SUB = { az: 'Bu dəvətnamə sizin üçündür. Adınızı yoxlayın və cavab verin.', ru: 'Это приглашение для вас. Проверьте имя и ответьте.', en: 'This invitation is for you. Check your name and reply.' };
 const isAndroid = /android/i.test(navigator.userAgent || '');
 function storeLink() {
   const c = CTA[lang];
@@ -189,11 +201,14 @@ async function rpc(fn, args) {
 }
 
 // ---- State -------------------------------------------------------------------
-const slug = new URLSearchParams(location.search).get('i') || '';
+const qs = new URLSearchParams(location.search);
+const slug = qs.get('i') || '';
+// Personal link from the host's guest list: ?g=<name>. It pre-fills the name so the reply matches the host's list.
+const invited = (qs.get('g') || '').trim().slice(0, 80);
 const browserLang = (navigator.language || 'az').slice(0, 2);
 let lang = ['az', 'ru', 'en'].includes(browserLang) ? browserLang : 'az';
 let party = null;
-let st = { name: store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], done: false, busy: false, error: '' };
+let st = { name: invited || store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], ownOn: false, note: '', done: false, busy: false, error: '' };
 
 function wordmark() {
   const cols = ['#C8402B', '#5B4BC4', '#1B6B47', '#B26A00', '#3A7BB8', '#C2416A', '#5B4BC4', '#C8402B'];
@@ -241,13 +256,16 @@ function render() {
     <h2 class="center" style="font-size:28px">${esc(s.thanksTitle)}</h2>
     <p class="center muted">${esc(st.answer === 'yes' ? (isKids() ? FN.thanksComing[lang] : FN.thanksComingP[lang])(st.kids) : s.thanksNotComing)}</p>
     <div class="card"><div class="muted" style="font-weight:700;font-size:13px">${esc(s.youBring)}</div>
-      ${mine.length ? mine.map((g) => `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(g.name)}</div><div class="muted">${esc(price(g.price))}${safeUrl(g.link) ? ` · <a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--primary)">${esc(s.viewInShop)}</a>` : ''}</div>`).join('') : `<div style="margin-top:6px">${esc(s.noGiftChosen)}</div>`}
+      ${st.note && st.ownOn ? `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(st.note)}</div>` : ''}
+      ${mine.length ? mine.map((g) => `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(g.name)}</div><div class="muted">${esc(price(g.price))}${safeUrl(g.link) ? ` · <a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--primary)">${esc(s.viewInShop)}</a>` : ''}</div>`).join('') : (st.note && st.ownOn ? '' : `<div style="margin-top:6px">${esc(s.noGiftChosen)}</div>`)}
     </div>
     ${st.answer === 'yes' ? `<button class="btn dark" style="width:100%;margin-top:16px" id="ics">${esc(s.addToCalendar)}</button><p class="center muted" style="font-size:13px">${esc(s.calendarHint)}</p>` : ''}
     <button class="btn outline" style="width:100%;margin-top:10px" id="change">${esc(s.changeAnswer)}</button>
+    <p class="center muted" style="font-size:14px;margin:14px 0 0">${esc(OTHER[lang].as(st.name))} · <button id="notme" style="border:0;background:none;color:var(--primary);font:inherit;font-weight:700;cursor:pointer;padding:6px 2px">${esc(OTHER[lang].btn)}</button></p>
     ${ctaCard(false)}`;
   } else {
     html += `<div class="card">
+      ${invited ? `<h2 style="margin-bottom:4px">${esc(GREET[lang](invited))}</h2><p class="muted" style="margin:0 0 10px">${esc(GREET_SUB[lang])}</p>` : ''}
       <label class="lbl" for="name">${esc(s.yourName)}</label>
       <input type="text" id="name" autocomplete="name" placeholder="${esc(s.yourNamePh)}" value="${esc(st.name)}">
     </div>
@@ -262,7 +280,7 @@ function render() {
     </div>`;
     if (showGifts) {
       html += `<h2 style="margin-top:22px">${esc(s.giftOptional)}</h2><p class="muted" style="margin:0">${esc(s.pickGiftHint)}</p>`;
-      if (!available.length) html += `<p class="muted">${esc(s.allTaken)}</p>`;
+      if (!available.length) html += `<p class="muted">${esc(OWN[lang].allTaken)}</p>`;
       html += available.map((g) => {
         const on = st.picked.includes(g.id);
         return `<div class="gift ${on ? 'sel' : ''}">
@@ -272,7 +290,14 @@ function render() {
           <button class="btn ${on ? 'picked' : 'dark'}" style="width:100%" data-gift="${esc(g.id)}" aria-pressed="${on}">${on ? '✓ ' + esc(s.selected) : esc(s.illBring)}</button>
         </div>`;
       }).join('');
+      const ownOn = st.ownOn || (!available.length && !!st.note);
+      html += `<div class="gift ${ownOn ? 'sel' : ''}">
+        <label class="check" style="margin-top:0"><input type="checkbox" id="ownon" ${ownOn ? 'checked' : ''}> <span style="font-weight:700">${esc(OWN[lang].check)}</span></label>
+        ${ownOn ? `<label class="lbl" for="note" style="margin-top:8px">${esc(OWN[lang].label)}</label><input type="text" id="note" maxlength="120" placeholder="${esc(OWN[lang].ph)}" value="${esc(st.note)}">` : ''}
+      </div>`;
       if (takenByOthers.length) html += `<div class="label-up">${esc(s.alreadyTaken)}</div>` + takenByOthers.map((g) => `<div class="taken"><s>${esc(g.name)}</s><span>${esc(s.taken)}</span></div>`).join('');
+      const others = (p.others_bring || []).filter(Boolean);
+      if (others.length) html += `<div class="label-up">${esc(OWN[lang].others)}</div>` + others.map((n) => `<div class="taken"><span style="flex:1">${esc(n)}</span><span>${esc(s.taken)}</span></div>`).join('');
     }
   }
   if (!st.done) html += ctaCard(true);
@@ -284,8 +309,14 @@ function render() {
 }
 
 // ---- Events ------------------------------------------------------------------
-document.addEventListener('input', (e) => { if (e.target.id === 'name') { st.name = e.target.value; st.error = ''; $('err').textContent = ''; } });
-document.addEventListener('change', (e) => { if (e.target.id === 'optin') { st.optIn = e.target.checked; render(); } });
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'name') { st.name = e.target.value; st.error = ''; $('err').textContent = ''; }
+  if (e.target.id === 'note') { st.note = e.target.value; st.error = ''; $('err').textContent = ''; }
+});
+document.addEventListener('change', (e) => {
+  if (e.target.id === 'optin') { st.optIn = e.target.checked; render(); }
+  if (e.target.id === 'ownon') { st.ownOn = e.target.checked; render(); if (st.ownOn) setTimeout(() => $('note') && $('note').focus(), 0); }
+});
 document.addEventListener('click', async (e) => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.lang) { lang = b.dataset.lang; store.set('kf.lang.' + slug, lang); return render(); }
@@ -293,6 +324,12 @@ document.addEventListener('click', async (e) => {
   if (b.dataset.kids) { st.kids = Math.min(9, Math.max(1, st.kids + Number(b.dataset.kids))); return render(); }
   if (b.dataset.gift) { const id = b.dataset.gift; st.picked = st.picked.includes(id) ? st.picked.filter((x) => x !== id) : [...st.picked, id]; st.error = ''; return render(); }
   if (b.id === 'change') { st.done = false; return render(); }
+  if (b.id === 'notme') { // someone else on the same phone: start a fresh, empty reply
+    store.set('kf.name', '');
+    st = { name: '', answer: null, kids: 1, optIn: false, picked: [], ownOn: false, note: '', done: false, busy: false, error: '' };
+    try { await load(null); } catch {}
+    render(); window.scrollTo({ top: 0 }); return;
+  }
   if (b.id === 'ics') return downloadIcs();
   if (b.id === 'submit') return submit();
 });
@@ -303,9 +340,13 @@ async function submit() {
   if (!name) { st.error = s.enterNameFirst; return render(); }
   if (!st.answer) { st.error = s.chooseRsvpFirst; return render(); }
   const showGifts = st.answer === 'yes' || (st.answer === 'no' && st.optIn);
+  const note = showGifts && st.ownOn ? st.note.trim() : '';
+  if (showGifts && st.ownOn && !note) { st.error = OWN[lang].need; return render(); }
   st.busy = true; st.error = ''; render();
   try {
-    const r = await rpc('submit_reply', { p_slug: slug, p_guest: name, p_coming: st.answer === 'yes', p_kids: st.answer === 'yes' ? st.kids : 0, p_gift_ids: showGifts ? st.picked : [] });
+    const args = { p_slug: slug, p_guest: name, p_coming: st.answer === 'yes', p_kids: st.answer === 'yes' ? st.kids : 0, p_gift_ids: showGifts ? st.picked : [] };
+    if (note) args.p_note = note; // only sent when used, so the page also works before database update 3
+    const r = await rpc('submit_reply', args);
     store.set('kf.name', name);
     await load(name);
     if (r && r.taken && r.taken.length) {
@@ -362,7 +403,9 @@ function downloadIcs() {
       st.answer = party.my_reply.coming ? 'yes' : 'no';
       st.kids = party.my_reply.kids || 1;
       st.picked = party.gifts.filter((g) => g.mine).map((g) => g.id);
-      st.optIn = !party.my_reply.coming && st.picked.length > 0;
+      st.note = party.my_reply.note || '';
+      st.ownOn = !!st.note;
+      st.optIn = !party.my_reply.coming && (st.picked.length > 0 || st.ownOn);
       st.done = true;
     }
     document.title = party ? `${party.child_name} — Konfetti` : 'Konfetti';
