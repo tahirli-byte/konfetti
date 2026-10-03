@@ -67,6 +67,18 @@
   .langs { display: flex; gap: 6px; justify-content: flex-end; }
   .langs button { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; min-height: 36px; padding: 0 10px; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; }
   .langs button.on { color: var(--primary); border-color: var(--primary); background: var(--primarySoft); }
+  .cta { background: linear-gradient(135deg, #5B4BC4 0%, #7B5BD6 60%, #C2416A 130%); color: #fff; border-radius: 22px; padding: 20px; margin-top: 22px; position: relative; overflow: hidden; }
+  .cta .dots { position: absolute; right: -6px; top: -6px; width: 120px; height: 90px; opacity: .9; }
+  .cta h3 { margin: 0 0 6px; font-size: 22px; line-height: 1.2; font-weight: 800; max-width: 85%; }
+  .cta p { margin: 0 0 14px; line-height: 1.45; opacity: .95; }
+  .cta .go { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 54px; border-radius: 14px; background: #fff; color: #3E2F9E; font-weight: 800; font-size: 17px; text-decoration: none; }
+  .cta .soon { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; background: rgba(255,255,255,.18); border-radius: 999px; padding: 4px 10px; }
+  .cta.small { padding: 16px; }
+  .cta.small h3 { font-size: 18px; }
+  .land h1 { font-size: 30px; line-height: 1.2; margin: 6px 0 8px; font-weight: 800; }
+  .land .lead { color: var(--muted); line-height: 1.5; margin: 0 0 12px; }
+  .feat { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-top: 8px; font-weight: 700; }
+  .feat i { flex: none; width: 30px; height: 30px; border-radius: 15px; background: var(--mint); color: var(--green); display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 800; }
 .scene .adultonly{display:none}.scene.no-kids .kidonly{display:none}.scene.no-kids .adultonly{display:inline}.scene.no-candles .candles{display:none}
 </style>
 </head>
@@ -84,6 +96,54 @@ const SCENE = `<svg viewBox="0 0 360 260" aria-label="Party illustration"><circl
 
 // ---- Texts (taken from the Konfetti app) ------------------------------------
 const T = {"az":{"youreInvited":"Ad gününə dəvətlisiniz!","yourName":"Adınız","yourNamePh":"Məs. Aysel (Muradın anası)","willYouCome":"Gələcəksiniz?","yesCome":"Bəli, gələcəyik","noCome":"Gələ bilməyəcəyik","howManyKids":"Neçə uşaq?","seeYou":"Əla, görüşənədək!","sorryMiss":"Təəssüf ki, gələ bilmirsiniz. Cavabınız üçün təşəkkürlər.","stillSendGift":"Yenə də hədiyyə göndərmək istəyirəm","giftOptional":"Hədiyyə seçin (istəyə görə)","pickGiftHint":"Seçdiyiniz hədiyyə digər qonaqlar üçün bağlanacaq.","illBring":"Bunu mən alacağam","selected":"Seçildi","alreadyTaken":"Artıq seçilib","taken":"Seçilib","allTaken":"Bütün hədiyyələr seçilib. İstədiyiniz hədiyyə xoş qarşılanacaq!","mostWanted":"Ən çox istədiyi","viewInShop":"Mağazada bax","submitReply":"Cavabı göndər","enterNameFirst":"Əvvəlcə adınızı daxil edin","chooseRsvpFirst":"Gələ biləcəyinizi seçin","giftJustTaken":"Bu hədiyyəni artıq başqa qonaq seçib. Başqasını seçin.","thanksTitle":"Təşəkkürlər!","thanksNotComing":"Cavabınız: gələ bilmirsiniz","youBring":"Sizin hədiyyəniz","noGiftChosen":"Hədiyyə seçilməyib","addToCalendar":"Təqvimə əlavə et","calendarHint":"Tədbirdən 1 gün əvvəl xatırlatma gələcək.","changeAnswer":"Cavabı dəyiş","openMap":"Xəritədə aç","errNetwork":"İnternet bağlantısını yoxlayın və yenidən cəhd edin","weekdays":["bazar","bazar ertəsi","çərşənbə axşamı","çərşənbə","cümə axşamı","cümə","şənbə"],"months":["yanvar","fevral","mart","aprel","may","iyun","iyul","avqust","sentyabr","oktyabr","noyabr","dekabr"]},"ru":{"youreInvited":"Приглашаем на день рождения!","yourName":"Ваше имя","yourNamePh":"Напр. Айсель (мама Мурада)","willYouCome":"Вы придёте?","yesCome":"Да, придём","noCome":"Не сможем","howManyKids":"Сколько детей?","seeYou":"Отлично, до встречи!","sorryMiss":"Жаль, что не получится. Спасибо, что ответили.","stillSendGift":"Всё равно хочу сделать подарок","giftOptional":"Выберите подарок (по желанию)","pickGiftHint":"Выбранный подарок станет недоступен другим гостям.","illBring":"Я подарю это","selected":"Выбрано","alreadyTaken":"Уже выбраны","taken":"Занято","allTaken":"Все подарки уже выбраны. Любой ваш подарок будет кстати!","mostWanted":"Самое желанное","viewInShop":"Посмотреть в магазине","submitReply":"Отправить ответ","enterNameFirst":"Сначала введите своё имя","chooseRsvpFirst":"Ответьте, придёте ли вы","giftJustTaken":"Этот подарок уже выбрал другой гость. Выберите другой.","thanksTitle":"Спасибо!","thanksNotComing":"Ваш ответ: не сможем прийти","youBring":"Ваш подарок","noGiftChosen":"Подарок не выбран","addToCalendar":"Добавить в календарь","calendarHint":"Напоминание придёт за 1 день до праздника.","changeAnswer":"Изменить ответ","openMap":"Открыть на карте","errNetwork":"Проверьте интернет и попробуйте снова","weekdays":["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],"months":["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"]},"en":{"youreInvited":"You're invited!","yourName":"Your name","yourNamePh":"e.g. Aysel (Murad's mum)","willYouCome":"Will you come?","yesCome":"Yes, we'll come","noCome":"Can't make it","howManyKids":"How many children?","seeYou":"Great, see you there!","sorryMiss":"Sorry you can't come. Thanks for letting us know.","stillSendGift":"I'd still like to send a gift","giftOptional":"Pick a gift (optional)","pickGiftHint":"The gift you pick will be closed for other guests.","illBring":"I'll bring this","selected":"Selected","alreadyTaken":"Already reserved","taken":"Taken","allTaken":"Every gift is reserved. Anything you choose is welcome!","mostWanted":"Most wanted","viewInShop":"View in shop","submitReply":"Send reply","enterNameFirst":"Enter your name first","chooseRsvpFirst":"Choose whether you're coming","giftJustTaken":"Someone else just reserved this gift. Please pick another.","thanksTitle":"Thank you!","thanksNotComing":"Your answer: can't come","youBring":"You're bringing","noGiftChosen":"No gift chosen","addToCalendar":"Add to calendar","calendarHint":"You'll get a reminder 1 day before.","changeAnswer":"Change answer","openMap":"Open in maps","errNetwork":"Check your internet connection and try again","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"months":["January","February","March","April","May","June","July","August","September","October","November","December"]}};
+// Store links: fill in once the app is published. While empty, the button opens the landing page.
+const APP_STORE_URL = '';
+const PLAY_STORE_URL = '';
+
+const CTA = {
+  az: { title: 'Siz də belə dəvətnamə yaradın!', text: 'Ad günü, toy, ev qonaqlığı — dəvətnamə, hədiyyə siyahısı və qonaqlar bir tətbiqdə. Pulsuz.',
+        ios: 'App Store-dan yüklə', android: 'Google Play-dən yüklə', soon: 'Tətbiq tezliklə App Store-da', more: 'Konfetti haqqında ətraflı',
+        lTitle: 'Hər bayram üçün hədiyyə siyahısı və dəvətnamə', lSub: 'Bir dəqiqəyə gözəl dəvətnamə hazırlayın, qonaqlara bir link göndərin və kimin gələcəyini, hansı hədiyyəni seçdiyini görün.',
+        f: ['Qonaqlar qeydiyyatsız cavab verir', 'Hədiyyələr təkrarlanmır — hər kəs fərqli hədiyyə seçir', 'Ad günü, toy, ev qonaqlığı, Yeni il və s.', 'Azərbaycan, rus və ingilis dillərində'] },
+  ru: { title: 'Создайте такое же приглашение!', text: 'День рождения, свадьба, новоселье — приглашение, список подарков и гости в одном приложении. Бесплатно.',
+        ios: 'Скачать в App Store', android: 'Скачать в Google Play', soon: 'Скоро в App Store', more: 'Подробнее о Konfetti',
+        lTitle: 'Списки подарков и приглашения для любого праздника', lSub: 'Создайте красивое приглашение за минуту, отправьте гостям одну ссылку и смотрите, кто придёт и какой подарок выбрал.',
+        f: ['Гости отвечают без регистрации', 'Подарки не повторяются — каждый выбирает свой', 'День рождения, свадьба, новоселье, Новый год и др.', 'На азербайджанском, русском и английском'] },
+  en: { title: 'Make an invitation like this!', text: 'Birthdays, weddings, housewarmings — invitations, gift lists and guests in one app. Free.',
+        ios: 'Download on the App Store', android: 'Get it on Google Play', soon: 'Coming soon to the App Store', more: 'Learn more about Konfetti',
+        lTitle: 'Gift lists and invitations for every celebration', lSub: 'Make a beautiful invitation in a minute, send guests one link, and see who is coming and which gift they picked.',
+        f: ['Guests reply without signing up', 'No duplicate gifts — everyone picks something different', 'Birthdays, weddings, housewarmings, New Year and more', 'In Azerbaijani, Russian and English'] },
+};
+const GREET = { az: (n) => `Salam, ${n}!`, ru: (n) => `Здравствуйте, ${n}!`, en: (n) => `Hi ${n}!` };
+const GREET_SUB = { az: 'Bu dəvətnamə sizin üçündür. Adınızı yoxlayın və cavab verin.', ru: 'Это приглашение для вас. Проверьте имя и ответьте.', en: 'This invitation is for you. Check your name and reply.' };
+const isAndroid = /android/i.test(navigator.userAgent || '');
+function storeLink() {
+  const c = CTA[lang];
+  if (isAndroid && safeUrl(PLAY_STORE_URL)) return { href: PLAY_STORE_URL, label: c.android };
+  if (safeUrl(APP_STORE_URL)) return { href: APP_STORE_URL, label: c.ios };
+  if (safeUrl(PLAY_STORE_URL)) return { href: PLAY_STORE_URL, label: c.android };
+  return null;
+}
+const DOTS = '<svg class="dots" viewBox="0 0 120 90" aria-hidden="true"><circle cx="20" cy="20" r="5" fill="#FFD45C"/><rect x="50" y="10" width="14" height="7" rx="2" fill="#fff" opacity=".8" transform="rotate(25 57 13)"/><circle cx="95" cy="28" r="6" fill="#8EC5F2"/><rect x="70" y="50" width="14" height="7" rx="2" fill="#FFD45C" transform="rotate(-20 77 53)"/><circle cx="40" cy="58" r="4" fill="#F28AA0"/><circle cx="108" cy="70" r="4" fill="#fff" opacity=".8"/></svg>';
+function ctaCard(small) {
+  const c = CTA[lang], l = storeLink();
+  const btn = l
+    ? `<a class="go" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} →</a>`
+    : `<a class="go" href="/" target="_blank" rel="noopener">${esc(c.more)} →</a><span class="soon">${esc(c.soon)}</span>`;
+  return `<section class="cta${small ? ' small' : ''}">${DOTS}<h3>${esc(c.title)}</h3><p>${esc(c.text)}</p>${btn}</section>`;
+}
+function landing() {
+  const c = CTA[lang], l = storeLink();
+  document.title = 'Konfetti';
+  return `<div class="land"><div class="scene no-kids no-candles">${SCENE}</div>
+    <h1>${esc(c.lTitle)}</h1><p class="lead">${esc(c.lSub)}</p>
+    ${c.f.map((t) => `<div class="feat"><i>✓</i><span>${esc(t)}</span></div>`).join('')}
+    <section class="cta">${DOTS}<h3>Konfetti</h3><p>${esc(c.text)}</p>
+      ${l ? `<a class="go" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} →</a>` : `<span class="soon" style="font-size:15px;padding:8px 14px">${esc(c.soon)}</span>`}
+    </section>
+    <p class="promo">support@getkonfetti.app</p></div>`;
+}
+
 const EXTRA = {
   az: { loading: 'Yüklənir…', notFound: 'Bu dəvətnamə tapılmadı. Linki yoxlayın.', promo: 'Siz də ad günü planlaşdırırsınız? <b>Konfetti</b> ilə hədiyyə siyahısı yaradın.', icsName: 'ad-gunu' },
   ru: { loading: 'Загрузка…', notFound: 'Приглашение не найдено. Проверьте ссылку.', promo: 'Тоже планируете праздник? Создайте список подарков в <b>Konfetti</b>.', icsName: 'den-rozhdeniya' },
@@ -131,11 +191,14 @@ async function rpc(fn, args) {
 }
 
 // ---- State -------------------------------------------------------------------
-const slug = new URLSearchParams(location.search).get('i') || '';
+const qs = new URLSearchParams(location.search);
+const slug = qs.get('i') || '';
+// Personal link from the host's guest list: ?g=<name>. It pre-fills the name so the reply matches the host's list.
+const invited = (qs.get('g') || '').trim().slice(0, 80);
 const browserLang = (navigator.language || 'az').slice(0, 2);
 let lang = ['az', 'ru', 'en'].includes(browserLang) ? browserLang : 'az';
 let party = null;
-let st = { name: store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], done: false, busy: false, error: '' };
+let st = { name: invited || store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], done: false, busy: false, error: '' };
 
 function wordmark() {
   const cols = ['#C8402B', '#5B4BC4', '#1B6B47', '#B26A00', '#3A7BB8', '#C2416A', '#5B4BC4', '#C8402B'];
@@ -159,7 +222,7 @@ function render() {
   document.documentElement.lang = lang;
   langButtons();
   const s = T[lang], x = EXTRA[lang];
-  if (!party) { $('app').innerHTML = `<p class="center muted" style="margin-top:40px">${esc(x.notFound)}</p>`; $('bar').hidden = true; return; }
+  if (!party) { $('app').innerHTML = slug ? `<p class="center muted" style="margin-top:40px">${esc(x.notFound)}</p>${ctaCard(false)}` : landing(); $('bar').hidden = true; return; }
   const p = party;
   const showGifts = st.answer === 'yes' || (st.answer === 'no' && st.optIn);
   const available = p.gifts.filter((g) => !g.taken || g.mine);
@@ -186,9 +249,11 @@ function render() {
       ${mine.length ? mine.map((g) => `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(g.name)}</div><div class="muted">${esc(price(g.price))}${safeUrl(g.link) ? ` · <a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--primary)">${esc(s.viewInShop)}</a>` : ''}</div>`).join('') : `<div style="margin-top:6px">${esc(s.noGiftChosen)}</div>`}
     </div>
     ${st.answer === 'yes' ? `<button class="btn dark" style="width:100%;margin-top:16px" id="ics">${esc(s.addToCalendar)}</button><p class="center muted" style="font-size:13px">${esc(s.calendarHint)}</p>` : ''}
-    <button class="btn outline" style="width:100%;margin-top:10px" id="change">${esc(s.changeAnswer)}</button>`;
+    <button class="btn outline" style="width:100%;margin-top:10px" id="change">${esc(s.changeAnswer)}</button>
+    ${ctaCard(false)}`;
   } else {
     html += `<div class="card">
+      ${invited ? `<h2 style="margin-bottom:4px">${esc(GREET[lang](invited))}</h2><p class="muted" style="margin:0 0 10px">${esc(GREET_SUB[lang])}</p>` : ''}
       <label class="lbl" for="name">${esc(s.yourName)}</label>
       <input type="text" id="name" autocomplete="name" placeholder="${esc(s.yourNamePh)}" value="${esc(st.name)}">
     </div>
@@ -216,7 +281,7 @@ function render() {
       if (takenByOthers.length) html += `<div class="label-up">${esc(s.alreadyTaken)}</div>` + takenByOthers.map((g) => `<div class="taken"><s>${esc(g.name)}</s><span>${esc(s.taken)}</span></div>`).join('');
     }
   }
-  html += `<p class="promo">${x.promo}</p>`;
+  if (!st.done) html += ctaCard(true);
   $('app').innerHTML = html;
   $('bar').hidden = st.done;
   $('submit').textContent = s.submitReply;
