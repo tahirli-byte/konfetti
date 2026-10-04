@@ -80,6 +80,7 @@
   .land .lead { color: var(--muted); line-height: 1.5; margin: 0 0 12px; }
   .feat { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-top: 8px; font-weight: 700; }
   .feat i { flex: none; width: 30px; height: 30px; border-radius: 15px; background: var(--mint); color: var(--green); display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 800; }
+.prog .agenda{display:flex;gap:14px;padding:8px 0;border-top:1px solid var(--soft)}.prog .agenda:first-of-type{border-top:0}.prog .agenda b{min-width:48px;color:var(--primary)}.prog .facts{margin-top:10px;display:grid;gap:8px}.prog .fact{display:flex;justify-content:space-between;gap:10px;background:var(--soft);border-radius:12px;padding:10px 12px}.prog .fact b{text-align:right}
 .scene .adultonly{display:none}.scene.no-kids .kidonly{display:none}.scene.no-kids .adultonly{display:inline}.scene.no-candles .candles{display:none}
 </style>
 </head>
@@ -120,6 +121,26 @@ const OWN = {
   ru: { allTaken: 'Все подарки из списка уже выбраны. Вы можете принести свой — напишите какой, чтобы подарки не повторялись.', check: 'Принесу другой подарок', label: 'Что вы принесёте?', ph: 'Напр. книгу, пазл, цветы', need: 'Напишите, что принесёте', others: 'Другие гости принесут' },
   en: { allTaken: 'Every gift on the list is taken. You can bring something else — write what, so gifts don\'t repeat.', check: "I'll bring a different gift", label: 'What will you bring?', ph: 'e.g. a book, a puzzle, flowers', need: 'Write what you will bring', others: 'Other guests are bringing' },
 };
+const PROG = {
+  az: { title: 'Proqram', ends: 'Bitir', cake: 'Tort kəsimi', dress: 'Dress-kod' },
+  ru: { title: 'Программа', ends: 'Окончание', cake: 'Торт', dress: 'Дресс-код' },
+  en: { title: 'Programme', ends: 'Ends at', cake: 'Cake', dress: 'Dress code' },
+};
+/** The host's programme: agenda with times, end time, cake time, dress code. Empty for events without one. */
+function programme(p) {
+  const items = Array.isArray(p.agenda) ? p.agenda.filter((a) => a && a.text) : [];
+  const g = PROG[lang];
+  const facts = [
+    p.cake_time ? `<div class="fact"><span>🎂 ${esc(g.cake)}</span><b>${esc(p.cake_time)}</b></div>` : '',
+    p.end_time ? `<div class="fact"><span>🕘 ${esc(g.ends)}</span><b>${esc(p.end_time)}</b></div>` : '',
+    p.dress_code ? `<div class="fact"><span>👗 ${esc(g.dress)}</span><b>${esc(p.dress_code)}</b></div>` : '',
+  ].join('');
+  if (!items.length && !facts) return '';
+  return `<section class="card prog"><h2>${esc(g.title)}</h2>
+    ${items.map((a) => `<div class="agenda"><b>${esc(a.time || '')}</b><span>${esc(a.text)}</span></div>`).join('')}
+    ${facts ? `<div class="facts">${facts}</div>` : ''}
+  </section>`;
+}
 const OTHER = {
   az: { as: (n) => `Cavab verən: ${n}`, btn: 'Başqa qonaq kimi cavab ver' },
   ru: { as: (n) => `Ответ от: ${n}`, btn: 'Ответить за другого гостя' },
@@ -165,14 +186,14 @@ const FN = {
   turnsLine: { en: (a) => `Turns ${a}!`, az: (a) => `${a} yaşı tamam olur!`, ru: (a) => `Исполняется ${a} ${ruPlural(a, 'год', 'года', 'лет')}!` },
   thanksComing: { en: (n) => `Your answer: coming, ${n} ${n === 1 ? 'child' : 'children'}`, az: (n) => `Cavabınız: gəlirsiniz, ${n} uşaq`, ru: (n) => `Ваш ответ: придём, ${n} ${ruPlural(n, 'ребёнок', 'ребёнка', 'детей')}` },
   occInvite: {
-    en: { kids: "You're invited to a birthday party!", birthday: "You're invited to a birthday party!", wedding: "You're invited to our wedding!", baby: "You're invited to a baby shower!", home: "You're invited to our housewarming!", newyear: "You're invited to a New Year party!", other: "You're invited!" },
-    az: { kids: 'Sizi ad gününə dəvət edirik!', birthday: 'Sizi ad gününə dəvət edirik!', wedding: 'Sizi toyumuza dəvət edirik!', baby: 'Sizi körpə şənliyinə dəvət edirik!', home: 'Sizi ev qonaqlığına dəvət edirik!', newyear: 'Sizi Yeni il şənliyinə dəvət edirik!', other: 'Sizi dəvət edirik!' },
-    ru: { kids: 'Приглашаем на день рождения!', birthday: 'Приглашаем на день рождения!', wedding: 'Приглашаем на нашу свадьбу!', baby: 'Приглашаем на бэби-шауэр!', home: 'Приглашаем на новоселье!', newyear: 'Приглашаем на новогодний праздник!', other: 'Приглашаем вас!' },
+    en: { kids: "You're invited to a birthday party!", birthday: "You're invited to a birthday party!", engagement: "You're invited to our engagement!", wedding: "You're invited to our wedding!", baby: "You're invited to a baby shower!", home: "You're invited to our housewarming!", newyear: "You're invited to a New Year party!", other: "You're invited!" },
+    az: { kids: 'Sizi ad gününə dəvət edirik!', birthday: 'Sizi ad gününə dəvət edirik!', engagement: 'Sizi nişanımıza dəvət edirik!', wedding: 'Sizi toyumuza dəvət edirik!', baby: 'Sizi körpə şənliyinə dəvət edirik!', home: 'Sizi ev qonaqlığına dəvət edirik!', newyear: 'Sizi Yeni il şənliyinə dəvət edirik!', other: 'Sizi dəvət edirik!' },
+    ru: { kids: 'Приглашаем на день рождения!', birthday: 'Приглашаем на день рождения!', engagement: 'Приглашаем на нашу помолвку!', wedding: 'Приглашаем на нашу свадьбу!', baby: 'Приглашаем на бэби-шауэр!', home: 'Приглашаем на новоселье!', newyear: 'Приглашаем на новогодний праздник!', other: 'Приглашаем вас!' },
   },
   occasions: {
-    en: { kids: "Kid's birthday", birthday: 'Birthday', wedding: 'Wedding', baby: 'Baby shower', home: 'Housewarming', newyear: 'New Year', other: 'Other' },
-    az: { kids: 'Uşaq ad günü', birthday: 'Ad günü', wedding: 'Toy', baby: 'Körpə şənliyi', home: 'Ev qonaqlığı', newyear: 'Yeni il', other: 'Digər' },
-    ru: { kids: 'Детский день рождения', birthday: 'День рождения', wedding: 'Свадьба', baby: 'Бэби-шауэр', home: 'Новоселье', newyear: 'Новый год', other: 'Другое' },
+    en: { kids: 'Birthday', birthday: 'Birthday', engagement: 'Engagement', wedding: 'Wedding', baby: 'Baby shower', home: 'Housewarming', newyear: 'New Year', other: 'Other' },
+    az: { kids: 'Ad günü', birthday: 'Ad günü', engagement: 'Nişan', wedding: 'Toy', baby: 'Körpə şənliyi', home: 'Ev qonaqlığı', newyear: 'Yeni il', other: 'Digər' },
+    ru: { kids: 'День рождения', birthday: 'День рождения', engagement: 'Помолвка', wedding: 'Свадьба', baby: 'Бэби-шауэр', home: 'Новоселье', newyear: 'Новый год', other: 'Другое' },
   },
   howManyPeople: { en: 'How many people?', az: 'Neçə nəfər?', ru: 'Сколько человек?' },
   thanksComingP: { en: (n) => `Your answer: coming, ${n === 1 ? '1 person' : `${n} people`}`, az: (n) => `Cavabınız: gəlirsiniz, ${n} nəfər`, ru: (n) => `Ваш ответ: придём, ${n} ${ruPlural(n, 'человек', 'человека', 'человек')}` },
@@ -246,10 +267,10 @@ function render() {
     <h1>${esc(p.child_name)}</h1>
     ${hasAge() ? `<div class="turns">${esc(FN.turnsLine[lang](p.age))}</div>`
       : occ() !== 'newyear' && occ() !== 'other' ? `<div class="turns">${esc(FN.occasions[lang][occ()])}</div>` : ''}
-    <p>${esc(formatWhen(lang, p.date, p.time))}<br>${esc([p.place, p.address].filter(Boolean).join(', '))}</p>
+    <p>${esc(formatWhen(lang, p.date, p.time) + (p.end_time ? '–' + p.end_time : ''))}<br>${esc([p.place, p.address].filter(Boolean).join(', '))}</p>
     ${p.message ? `<p>${esc(p.message)}</p>` : ''}
     <a class="pill-btn" href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">${esc(s.openMap)}</a>
-  </section>`;
+  </section>${programme(p)}`;
 
   if (st.done) {
     const mine = p.gifts.filter((g) => g.mine);
@@ -365,7 +386,7 @@ async function submit() {
 }
 
 // Occasion helpers. Invitations made before occasions existed are kids' birthdays.
-const OCCS = ['kids', 'birthday', 'wedding', 'baby', 'home', 'newyear', 'other'];
+const OCCS = ['kids', 'birthday', 'engagement', 'wedding', 'baby', 'home', 'newyear', 'other'];
 const occ = () => (party && OCCS.includes(party.occasion) ? party.occasion : 'kids');
 const isKids = () => occ() === 'kids';
 const hasAge = () => (occ() === 'kids' || occ() === 'birthday') && Number(party.age) > 0;
@@ -380,7 +401,8 @@ function downloadIcs() {
   const p = party; const [y, m, d] = p.date.split('-').map(Number); const [hh, mm] = p.time.split(':').map(Number);
   const pad = (n) => String(n).padStart(2, '0');
   const start = `${y}${pad(m)}${pad(d)}T${pad(hh)}${pad(mm)}00`;
-  const endD = new Date(y, m - 1, d, hh + 3, mm);
+  const [eh, em] = /^\d{2}:\d{2}$/.test(p.end_time || '') ? p.end_time.split(':').map(Number) : [hh + 3, mm];
+  const endD = new Date(y, m - 1, d + (eh * 60 + em <= hh * 60 + mm ? 1 : 0), eh, em);
   const end = `${endD.getFullYear()}${pad(endD.getMonth() + 1)}${pad(endD.getDate())}T${pad(endD.getHours())}${pad(endD.getMinutes())}00`;
   const clean = (t) => String(t).replace(/[\\,;]/g, (c) => '\\' + c).replace(/\n/g, '\\n');
   const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Konfetti//AZ', 'BEGIN:VEVENT', `UID:${slug}@konfetti`, `DTSTAMP:${start}`,
