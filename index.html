@@ -2,420 +2,89 @@
 <html lang="az">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konfetti — Support</title>
 <link rel="icon" href="/favicon.png">
-<title>Konfetti — dəvətnamə</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#F5F4FB; --surface:#FFFFFF; --ink:#1F1A33; --muted:#5E5873; --border:#E2DFEE; --field:#D6D2E6; --soft:#EDEBF5;
-          --coral:#C8402B; --primary:#5B4BC4; --primarySoft:#ECE8FB; --sun:#FFD45C; --mint:#DDF3E8; --green:#1B6B47; --danger:#B42318; }
+  :root { --bg:#F5F4FB; --surface:#fff; --ink:#1F1A33; --muted:#5E5873; --border:#E2DFEE; --primary:#5B4BC4; --primarySoft:#ECE8FB; }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: Nunito, system-ui, sans-serif; font-size: 16px; }
-  .wrap { max-width: 480px; margin: 0 auto; padding: 0 16px 120px; }
-  .top { display: flex; align-items: center; gap: 6px; padding: 12px 0 4px; }
-  .top svg { width: 40px; height: 40px; }
-  .word { font-weight: 800; font-size: 26px; letter-spacing: -0.3px; }
-  .scene { display: flex; justify-content: center; }
-  .scene svg { width: 100%; max-width: 380px; height: auto; }
-  .hero { background: var(--coral); color: #fff; border-radius: 22px; padding: 22px; margin-top: -8px; }
-  .hero .small { font-weight: 600; }
-  .hero h1 { margin: 2px 0 0; font-size: 38px; line-height: 1.15; font-weight: 800; }
-  .hero .turns { font-size: 21px; font-weight: 700; }
-  .hero p { margin: 8px 0 0; line-height: 1.45; }
-  .pill-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; margin-top: 12px; border-radius: 12px;
-              background: #fff; color: var(--coral); font-weight: 700; text-decoration: none; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-top: 16px; }
-  h2 { margin: 0 0 8px; font-size: 20px; font-weight: 800; }
-  label.lbl { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
-  input[type=text] { width: 100%; min-height: 48px; border-radius: 12px; border: 1px solid var(--field); padding: 0 14px;
-                     font: inherit; color: var(--ink); background: var(--surface); }
-  input[type=text]:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
-  .row { display: flex; gap: 10px; }
-  .btn { flex: 1; min-height: 52px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--surface); color: var(--ink);
-         font: inherit; font-weight: 700; cursor: pointer; padding: 8px 12px; }
-  .btn.on { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-  .btn.dark { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .btn.outline { background: transparent; border-color: var(--ink); }
-  .btn.picked { background: var(--mint); color: var(--green); border-color: var(--green); }
-  .btn:disabled { opacity: .5; }
-  .stepper { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-  .stepper .ctl { display: flex; align-items: center; gap: 6px; }
-  .stepper button { width: 48px; height: 48px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--surface); font: inherit; font-size: 20px; font-weight: 800; cursor: pointer; }
-  .stepper b { min-width: 28px; text-align: center; font-size: 20px; }
-  .ok { color: var(--green); font-weight: 600; margin-top: 10px; }
-  .muted { color: var(--muted); }
-  .check { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 8px; cursor: pointer; }
-  .check input { width: 22px; height: 22px; accent-color: var(--green); }
-  .gift { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-top: 10px; }
-  .gift.sel { border: 2px solid var(--green); }
-  .gift .name { font-weight: 700; font-size: 17px; margin: 4px 0; }
-  .gift .meta { display: flex; gap: 12px; flex-wrap: wrap; color: var(--muted); margin-bottom: 10px; }
-  .gift .meta a { color: var(--primary); font-weight: 600; }
-  .tag { display: inline-block; background: var(--sun); color: var(--ink); font-weight: 700; font-size: 12px; border-radius: 8px; padding: 2px 8px; }
-  .taken { display: flex; justify-content: space-between; background: var(--soft); color: var(--muted); border-radius: 12px; padding: 12px; margin-top: 8px; }
-  .taken s { flex: 1; }
-  .label-up { font-weight: 800; font-size: 13px; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-top: 18px; }
-  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-top: 1px solid var(--border); padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); }
-  .bar .in { max-width: 480px; margin: 0 auto; }
-  .err { color: var(--danger); text-align: center; margin-bottom: 6px; min-height: 0; }
-  .center { text-align: center; }
-  .tick { width: 64px; height: 64px; border-radius: 32px; background: var(--mint); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; margin: 16px auto 6px; }
-  .promo { text-align: center; color: var(--muted); font-size: 14px; margin-top: 28px; }
-  .promo b { color: var(--primary); }
-  .langs { display: flex; gap: 6px; justify-content: flex-end; }
-  .langs button { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; min-height: 36px; padding: 0 10px; font: inherit; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; }
-  .langs button.on { color: var(--primary); border-color: var(--primary); background: var(--primarySoft); }
-  .cta { background: linear-gradient(135deg, #5B4BC4 0%, #7B5BD6 60%, #C2416A 130%); color: #fff; border-radius: 22px; padding: 20px; margin-top: 22px; position: relative; overflow: hidden; }
-  .cta .dots { position: absolute; right: -6px; top: -6px; width: 120px; height: 90px; opacity: .9; }
-  .cta h3 { margin: 0 0 6px; font-size: 22px; line-height: 1.2; font-weight: 800; max-width: 85%; }
-  .cta p { margin: 0 0 14px; line-height: 1.45; opacity: .95; }
-  .cta .go { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 54px; border-radius: 14px; background: #fff; color: #3E2F9E; font-weight: 800; font-size: 17px; text-decoration: none; }
-  .cta .soon { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; background: rgba(255,255,255,.18); border-radius: 999px; padding: 4px 10px; }
-  .cta.small { padding: 16px; }
-  .cta.small h3 { font-size: 18px; }
-  .land h1 { font-size: 30px; line-height: 1.2; margin: 6px 0 8px; font-weight: 800; }
-  .land .lead { color: var(--muted); line-height: 1.5; margin: 0 0 12px; }
-  .feat { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-top: 8px; font-weight: 700; }
-  .feat i { flex: none; width: 30px; height: 30px; border-radius: 15px; background: var(--mint); color: var(--green); display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 800; }
-.scene .adultonly{display:none}.scene.no-kids .kidonly{display:none}.scene.no-kids .adultonly{display:inline}.scene.no-candles .candles{display:none}
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; line-height:1.6; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 16px 60px; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 0 4px; }
+  .brand { font-weight:800; font-size:24px; text-decoration:none; }
+  .brand span:nth-child(1){color:#C8402B} .brand span:nth-child(2){color:#5B4BC4} .brand span:nth-child(3){color:#1B6B47} .brand span:nth-child(4){color:#B26A00}
+  .brand span:nth-child(5){color:#3A7BB8} .brand span:nth-child(6){color:#C2416A} .brand span:nth-child(7){color:#5B4BC4} .brand span:nth-child(8){color:#C8402B}
+  .langs button { border:1px solid var(--border); background:var(--surface); border-radius:10px; min-height:36px; padding:0 10px; font:inherit; font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; }
+  .langs button.on { color:var(--primary); border-color:var(--primary); background:var(--primarySoft); }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px; margin-top:16px; }
+  h1 { font-size:28px; line-height:1.25; margin:8px 0 4px; }
+  h2 { font-size:19px; margin:22px 0 6px; }
+  h2:first-child { margin-top:0; }
+  p, li { color:var(--ink); }
+  .muted { color:var(--muted); font-size:14px; }
+  a { color:var(--primary); font-weight:600; }
+  ul { padding-left:20px; }
+  [data-l] { display:none; }
+  [data-l].show { display:block; }
+  footer { margin-top:24px; text-align:center; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><svg viewBox="0 0 120 120" aria-label="Konfetti"><path d="M66 51 q6 -15 17 -13 q11 2 13 -11" stroke="#C8402B" stroke-width="3.6" fill="none" stroke-linecap="round"></path><path d="M70 57 q15 -3 19 8 q4 10 15 6" stroke="#3A7BB8" stroke-width="3.6" fill="none" stroke-linecap="round"></path><rect x="75" y="27.5" width="10" height="5" rx="1.5" fill="#C8402B" transform="rotate(30 80 30)"></rect><circle cx="93" cy="47" r="3.6" fill="#1B6B47"></circle><circle cx="70" cy="20" r="3.6" fill="#3A7BB8"></circle><rect x="93" y="21.5" width="10" height="5" rx="1.5" fill="#FFB020" transform="rotate(-25 98 24)"></rect><rect x="99" y="59.5" width="10" height="5" rx="1.5" fill="#E25D78" transform="rotate(55 104 62)"></rect><circle cx="86" cy="10" r="3.6" fill="#C8402B"></circle><rect x="53" y="27.5" width="10" height="5" rx="1.5" fill="#1B6B47" transform="rotate(-40 58 30)"></rect><circle cx="108" cy="40" r="3.6" fill="#5B4BC4"></circle><circle cx="88" cy="72" r="3.6" fill="#FFB020"></circle><polygon points="24,96 52.7,44.7 75.3,67.3" fill="#5B4BC4"></polygon><line x1="36.9" y1="72.9" x2="47.1" y2="83.1" stroke="#FFD45C" stroke-width="4.5" stroke-linecap="round"></line><line x1="45.5" y1="57.5" x2="62.5" y2="74.5" stroke="#FFD45C" stroke-width="4.5" stroke-linecap="round"></line><ellipse cx="64" cy="56" rx="16" ry="6" fill="#3F3577" transform="rotate(45 64 56)"></ellipse></svg><span class="word" id="word"></span><span style="flex:1"></span><div class="langs" id="langs"></div></div>
-  <div id="app"><p class="center muted" style="margin-top:40px" id="loading"></p></div>
+  <div class="top">
+    <a class="brand" href="/" aria-label="Konfetti"><span>k</span><span>o</span><span>n</span><span>f</span><span>e</span><span>t</span><span>t</span><span>i</span></a>
+    <div class="langs"><button data-set="az">AZ</button> <button data-set="ru">RU</button> <button data-set="en">EN</button></div>
+  </div>
+  <div data-l="az">
+<h1>Kömək və dəstək</h1>
+<div class="card">
+<h2>Bizimlə əlaqə</h2><p>Sualınız, təklifiniz və ya problemlə bağlı yazın: <a href="mailto:support@getkonfetti.app">support@getkonfetti.app</a>. Adətən 1–2 iş günü ərzində cavab veririk.</p>
+<h2>Necə başlayım?</h2><p>Tətbiqdə <b>Yeni siyahı</b> seçin, nə qeyd etdiyinizi (ad günü, toy və s.), tarixi və məkanı yazın, sonra hədiyyələri əlavə edin. <b>Dəvətnaməni göndər</b> düyməsi ilə linki WhatsApp və ya istənilən mesajlaşma ilə paylaşın.</p>
+<h2>Qonaqlar tətbiqi yükləməlidirmi?</h2><p>Xeyr. Qonaqlar linki telefonun brauzerində açır, adını yazır, cavab verir və hədiyyə seçir. Qeydiyyat lazım deyil.</p>
+<h2>Hər qonağa ayrıca link necə göndərim?</h2><p>Tədbirdə <b>Dəvətlilərin siyahısını aç</b> seçin, qonaqları əlavə edin və hər birinin yanında <b>Göndər</b> basın. Hər qonaq öz adı yazılmış link alır və cavabı siyahınızda avtomatik görünür.</p>
+<h2>Giriş kodu gəlmədi</h2><p>Spam qovluğunu yoxlayın, email ünvanının düzgün yazıldığından əmin olun və bir dəqiqədən sonra kodu yenidən istəyin.</p>
+<h2>Hesabımı necə silə bilərəm?</h2><p>Tətbiqdə <b>Daha çox → Hesabı sil</b> seçin. Hesab, onlayn tədbirlər və qonaq cavabları birdəfəlik silinir.</p>
+<p class="muted">Ətraflı: <a href="/privacy/">Məxfilik siyasəti</a></p>
 </div>
-<div class="bar" id="bar" hidden><div class="in"><div class="err" id="err"></div><button class="btn primary" style="width:100%" id="submit"></button></div></div>
+  </div>
+  <div data-l="ru">
+<h1>Помощь и поддержка</h1>
+<div class="card">
+<h2>Связаться с нами</h2><p>Вопросы, предложения или проблемы: <a href="mailto:support@getkonfetti.app">support@getkonfetti.app</a>. Обычно отвечаем в течение 1–2 рабочих дней.</p>
+<h2>С чего начать?</h2><p>Нажмите <b>Новый список</b>, выберите повод (день рождения, свадьба и т. д.), дату и место, затем добавьте подарки. Кнопкой <b>Отправить приглашение</b> поделитесь ссылкой в WhatsApp или любом мессенджере.</p>
+<h2>Гостям нужно скачивать приложение?</h2><p>Нет. Гости открывают ссылку в браузере телефона, вводят имя, отвечают и выбирают подарок. Регистрация не нужна.</p>
+<h2>Как отправить каждому гостю личную ссылку?</h2><p>В празднике откройте <b>список приглашённых</b>, добавьте гостей и нажмите <b>Отправить</b> рядом с каждым. Каждый получит ссылку со своим именем, и его ответ автоматически появится в списке.</p>
+<h2>Не пришёл код входа</h2><p>Проверьте папку «Спам», правильность email и запросите код снова через минуту.</p>
+<h2>Как удалить аккаунт?</h2><p>В приложении: <b>Ещё → Удалить аккаунт</b>. Аккаунт, онлайн-праздники и ответы гостей удаляются безвозвратно.</p>
+<p class="muted">Подробнее: <a href="/privacy/">Политика конфиденциальности</a></p>
+</div>
+  </div>
+  <div data-l="en">
+<h1>Help &amp; support</h1>
+<div class="card">
+<h2>Contact us</h2><p>Questions, ideas or problems: <a href="mailto:support@getkonfetti.app">support@getkonfetti.app</a>. We usually reply within 1–2 working days.</p>
+<h2>How do I start?</h2><p>Tap <b>New list</b>, choose what you're celebrating (birthday, wedding and more), the date and place, then add gifts. Tap <b>Send invitation</b> to share the link on WhatsApp or any messenger.</p>
+<h2>Do guests need the app?</h2><p>No. Guests open the link in their phone's browser, type their name, reply and pick a gift. No account needed.</p>
+<h2>How do I send each guest a personal link?</h2><p>In your event, open the <b>guest list</b>, add guests and tap <b>Send</b> next to each one. Each guest gets a link with their name, and their reply appears in your list automatically.</p>
+<h2>I didn't get the sign-in code</h2><p>Check your spam folder, make sure the email is spelled correctly, and request the code again after a minute.</p>
+<h2>How do I delete my account?</h2><p>In the app: <b>More → Delete account</b>. Your account, online events and guest replies are deleted permanently.</p>
+<p class="muted">More: <a href="/privacy/">Privacy policy</a></p>
+</div>
+  </div>
+  <footer class="muted"><a href="/privacy/">Privacy</a> · <a href="/support/">Support</a> · support@getkonfetti.app</footer>
+</div>
 <script>
-// ---- Settings --------------------------------------------------------------
-const SUPABASE_URL = 'https://cawltgrfrpokuppmyxkp.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_X8NqKTE65pmtYRiV4LlJAg_HBuh3-Ld';
-const SCENE = `<svg viewBox="0 0 360 260" aria-label="Party illustration"><circle cx="180" cy="140" r="122" fill="#ECE8FB"></circle><ellipse cx="180" cy="240" rx="150" ry="8" fill="#E2DFEE"></ellipse><circle cx="150" cy="40" r="3.5" fill="#C8402B"></circle><rect x="201" y="26" width="8" height="4" rx="1" fill="#1B6B47" transform="rotate(-25 205 28)"></rect><rect x="241" y="70" width="8" height="4" rx="1" fill="#FFB020" transform="rotate(40 245 72)"></rect><circle cx="122" cy="98" r="3.5" fill="#8B7FD6"></circle><rect x="258" y="116" width="8" height="4" rx="1" fill="#C8402B" transform="rotate(60 262 118)"></rect><rect x="24" y="110" width="8" height="4" rx="1" fill="#FFB020" transform="rotate(10 28 112)"></rect><circle cx="346" cy="150" r="3.5" fill="#1B6B47"></circle><rect x="178" y="72" width="8" height="4" rx="1" fill="#8EC5F2" transform="rotate(30 182 74)"></rect><rect x="218" y="98" width="8" height="4" rx="1" fill="#F28AA0" transform="rotate(-10 222 100)"></rect><circle cx="96" cy="140" r="3.5" fill="#F28AA0"></circle><rect x="336" y="18" width="8" height="4" rx="1" fill="#8B7FD6" transform="rotate(15 340 20)"></rect><path d="M70 87 q-6 20 4 40 q6 18 -2 38" stroke="#8A8499" stroke-width="1.5" fill="none"></path><ellipse cx="70" cy="60" rx="22" ry="27" fill="#C8402B"></ellipse><ellipse cx="62" cy="50" rx="5" ry="8" fill="#FFFFFF" opacity="0.35"></ellipse><polygon points="66,86 74,86 70,92" fill="#C8402B"></polygon><path d="M110 60 q4 14 -2 26" stroke="#8A8499" stroke-width="1.5" fill="none"></path><ellipse cx="110" cy="40" rx="16" ry="20" fill="#8EC5F2"></ellipse><ellipse cx="104" cy="33" rx="4" ry="6" fill="#FFFFFF" opacity="0.4"></ellipse><path d="M290 79 q6 20 -4 40 q-8 18 2 36" stroke="#8A8499" stroke-width="1.5" fill="none"></path><ellipse cx="290" cy="52" rx="22" ry="27" fill="#FFD45C"></ellipse><ellipse cx="282" cy="42" rx="5" ry="8" fill="#FFFFFF" opacity="0.45"></ellipse><polygon points="286,78 294,78 290,84" fill="#FFD45C"></polygon><ellipse cx="180" cy="226" rx="60" ry="7" fill="#D6D2E6"></ellipse><rect x="135" y="170" width="90" height="56" rx="8" fill="#F28AA0"></rect><path d="M135 180 q7 10 15 0 q7 10 15 0 q7 10 15 0 q7 10 15 0 q7 10 15 0 q7 10 15 0 v-4 a6 6 0 0 0 -6 -6 h-78 a6 6 0 0 0 -6 6 z" fill="#FFFFFF"></path><rect x="150" y="132" width="60" height="42" rx="7" fill="#FFE3A3"></rect><path d="M150 141 q5 8 10 0 q5 8 10 0 q5 8 10 0 q5 8 10 0 q5 8 10 0 q5 8 10 0 v-3 a6 6 0 0 0 -6 -6 h-48 a6 6 0 0 0 -6 6 z" fill="#FFFFFF"></path><circle cx="160" cy="200" r="3" fill="#FFFFFF"></circle><circle cx="180" cy="206" r="3" fill="#FFFFFF"></circle><circle cx="200" cy="200" r="3" fill="#FFFFFF"></circle><g class="candles"><g><rect x="162" y="112" width="6" height="20" rx="2" fill="#8EC5F2"></rect><ellipse cx="165" cy="105" rx="4" ry="7" fill="#FFB020"></ellipse><ellipse cx="165" cy="107" rx="2" ry="4" fill="#FFE27A"></ellipse></g><g><rect x="177" y="112" width="6" height="20" rx="2" fill="#C8402B"></rect><ellipse cx="180" cy="105" rx="4" ry="7" fill="#FFB020"></ellipse><ellipse cx="180" cy="107" rx="2" ry="4" fill="#FFE27A"></ellipse></g><g><rect x="192" y="112" width="6" height="20" rx="2" fill="#1B6B47"></rect><ellipse cx="195" cy="105" rx="4" ry="7" fill="#FFB020"></ellipse><ellipse cx="195" cy="107" rx="2" ry="4" fill="#FFE27A"></ellipse></g></g><rect x="94" y="192" width="36" height="34" rx="4" fill="#1B6B47"></rect><rect x="109" y="192" width="6" height="34" fill="#FFD45C"></rect><rect x="94" y="205" width="36" height="6" fill="#FFD45C"></rect><ellipse cx="106" cy="189" rx="7" ry="4" fill="#FFD45C"></ellipse><ellipse cx="118" cy="189" rx="7" ry="4" fill="#FFD45C"></ellipse><rect x="232" y="200" width="30" height="26" rx="4" fill="#8B7FD6"></rect><rect x="244" y="200" width="6" height="26" fill="#FFFFFF"></rect><ellipse cx="242" cy="197" rx="6" ry="3.5" fill="#FFFFFF"></ellipse><ellipse cx="252" cy="197" rx="6" ry="3.5" fill="#FFFFFF"></ellipse><g class="adultonly"><rect x="22" y="190" width="48" height="46" rx="5" fill="#C8402B"></rect><rect x="42" y="190" width="8" height="46" fill="#FFD45C"></rect><rect x="22" y="207" width="48" height="8" fill="#FFD45C"></rect><ellipse cx="39" cy="186" rx="9" ry="5" fill="#FFD45C"></ellipse><ellipse cx="53" cy="186" rx="9" ry="5" fill="#FFD45C"></ellipse><rect x="290" y="198" width="44" height="38" rx="5" fill="#FFD45C"></rect><rect x="308" y="198" width="8" height="38" fill="#8B7FD6"></rect><rect x="290" y="213" width="44" height="8" fill="#8B7FD6"></rect><ellipse cx="305" cy="194" rx="8" ry="4.5" fill="#8B7FD6"></ellipse><ellipse cx="319" cy="194" rx="8" ry="4.5" fill="#8B7FD6"></ellipse></g><g class="kidonly"><line x1="33" y1="194" x2="20" y2="174" stroke="#8EC5F2" stroke-width="7" stroke-linecap="round"></line><line x1="57" y1="194" x2="71" y2="167" stroke="#8EC5F2" stroke-width="7" stroke-linecap="round"></line><circle cx="19" cy="172" r="4.5" fill="#F2C29B"></circle><circle cx="72" cy="165" r="4.5" fill="#F2C29B"></circle><rect x="30" y="186" width="30" height="42" rx="12" fill="#8EC5F2"></rect><rect x="34" y="224" width="8" height="12" rx="3" fill="#1F1A33"></rect><rect x="48" y="224" width="8" height="12" rx="3" fill="#1F1A33"></rect><circle cx="45" cy="170" r="16" fill="#F2C29B"></circle><path d="M29 168 q2 -16 16 -16 q14 0 16 16 q-8 -7 -16 -7 q-8 0 -16 7 z" fill="#4A3426"></path><polygon points="34,158 56,158 45,126" fill="#FFD45C"></polygon><circle cx="45" cy="126" r="4" fill="#C8402B"></circle><circle cx="40" cy="171" r="1.8" fill="#1F1A33"></circle><circle cx="50" cy="171" r="1.8" fill="#1F1A33"></circle><path d="M39 177 q6 6 12 0" stroke="#1F1A33" stroke-width="1.8" fill="none" stroke-linecap="round"></path><line x1="303" y1="196" x2="289" y2="160" stroke="#C8402B" stroke-width="7" stroke-linecap="round"></line><line x1="327" y1="196" x2="342" y2="208" stroke="#C8402B" stroke-width="7" stroke-linecap="round"></line><circle cx="288" cy="157" r="4.5" fill="#D9A07A"></circle><circle cx="343" cy="209" r="4.5" fill="#D9A07A"></circle><path d="M300 190 q15 -8 30 0 l6 38 h-42 z" fill="#C8402B"></path><rect x="307" y="226" width="7" height="11" rx="3" fill="#1F1A33"></rect><rect x="318" y="226" width="7" height="11" rx="3" fill="#1F1A33"></rect><circle cx="299" cy="168" r="6" fill="#3B2A20"></circle><circle cx="331" cy="168" r="6" fill="#3B2A20"></circle><circle cx="315" cy="172" r="16" fill="#D9A07A"></circle><path d="M299 170 q2 -16 16 -16 q14 0 16 16 q-8 -6 -16 -6 q-8 0 -16 6 z" fill="#3B2A20"></path><polygon points="304,160 326,160 315,128" fill="#8EC5F2"></polygon><circle cx="315" cy="128" r="4" fill="#FFD45C"></circle><circle cx="310" cy="173" r="1.8" fill="#1F1A33"></circle><circle cx="320" cy="173" r="1.8" fill="#1F1A33"></circle><path d="M309 179 q6 6 12 0" stroke="#1F1A33" stroke-width="1.8" fill="none" stroke-linecap="round"></path></g></svg>`;
-
-// ---- Texts (taken from the Konfetti app) ------------------------------------
-const T = {"az":{"youreInvited":"Ad gününə dəvətlisiniz!","yourName":"Adınız","yourNamePh":"Məs. Aysel (Muradın anası)","willYouCome":"Gələcəksiniz?","yesCome":"Bəli, gələcəyik","noCome":"Gələ bilməyəcəyik","howManyKids":"Neçə uşaq?","seeYou":"Əla, görüşənədək!","sorryMiss":"Təəssüf ki, gələ bilmirsiniz. Cavabınız üçün təşəkkürlər.","stillSendGift":"Yenə də hədiyyə göndərmək istəyirəm","giftOptional":"Hədiyyə seçin (istəyə görə)","pickGiftHint":"Seçdiyiniz hədiyyə digər qonaqlar üçün bağlanacaq.","illBring":"Bunu mən alacağam","selected":"Seçildi","alreadyTaken":"Artıq seçilib","taken":"Seçilib","allTaken":"Bütün hədiyyələr seçilib. İstədiyiniz hədiyyə xoş qarşılanacaq!","mostWanted":"Ən çox istədiyi","viewInShop":"Mağazada bax","submitReply":"Cavabı göndər","enterNameFirst":"Əvvəlcə adınızı daxil edin","chooseRsvpFirst":"Gələ biləcəyinizi seçin","giftJustTaken":"Bu hədiyyəni artıq başqa qonaq seçib. Başqasını seçin.","thanksTitle":"Təşəkkürlər!","thanksNotComing":"Cavabınız: gələ bilmirsiniz","youBring":"Sizin hədiyyəniz","noGiftChosen":"Hədiyyə seçilməyib","addToCalendar":"Təqvimə əlavə et","calendarHint":"Tədbirdən 1 gün əvvəl xatırlatma gələcək.","changeAnswer":"Cavabı dəyiş","openMap":"Xəritədə aç","errNetwork":"İnternet bağlantısını yoxlayın və yenidən cəhd edin","weekdays":["bazar","bazar ertəsi","çərşənbə axşamı","çərşənbə","cümə axşamı","cümə","şənbə"],"months":["yanvar","fevral","mart","aprel","may","iyun","iyul","avqust","sentyabr","oktyabr","noyabr","dekabr"]},"ru":{"youreInvited":"Приглашаем на день рождения!","yourName":"Ваше имя","yourNamePh":"Напр. Айсель (мама Мурада)","willYouCome":"Вы придёте?","yesCome":"Да, придём","noCome":"Не сможем","howManyKids":"Сколько детей?","seeYou":"Отлично, до встречи!","sorryMiss":"Жаль, что не получится. Спасибо, что ответили.","stillSendGift":"Всё равно хочу сделать подарок","giftOptional":"Выберите подарок (по желанию)","pickGiftHint":"Выбранный подарок станет недоступен другим гостям.","illBring":"Я подарю это","selected":"Выбрано","alreadyTaken":"Уже выбраны","taken":"Занято","allTaken":"Все подарки уже выбраны. Любой ваш подарок будет кстати!","mostWanted":"Самое желанное","viewInShop":"Посмотреть в магазине","submitReply":"Отправить ответ","enterNameFirst":"Сначала введите своё имя","chooseRsvpFirst":"Ответьте, придёте ли вы","giftJustTaken":"Этот подарок уже выбрал другой гость. Выберите другой.","thanksTitle":"Спасибо!","thanksNotComing":"Ваш ответ: не сможем прийти","youBring":"Ваш подарок","noGiftChosen":"Подарок не выбран","addToCalendar":"Добавить в календарь","calendarHint":"Напоминание придёт за 1 день до праздника.","changeAnswer":"Изменить ответ","openMap":"Открыть на карте","errNetwork":"Проверьте интернет и попробуйте снова","weekdays":["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],"months":["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"]},"en":{"youreInvited":"You're invited!","yourName":"Your name","yourNamePh":"e.g. Aysel (Murad's mum)","willYouCome":"Will you come?","yesCome":"Yes, we'll come","noCome":"Can't make it","howManyKids":"How many children?","seeYou":"Great, see you there!","sorryMiss":"Sorry you can't come. Thanks for letting us know.","stillSendGift":"I'd still like to send a gift","giftOptional":"Pick a gift (optional)","pickGiftHint":"The gift you pick will be closed for other guests.","illBring":"I'll bring this","selected":"Selected","alreadyTaken":"Already reserved","taken":"Taken","allTaken":"Every gift is reserved. Anything you choose is welcome!","mostWanted":"Most wanted","viewInShop":"View in shop","submitReply":"Send reply","enterNameFirst":"Enter your name first","chooseRsvpFirst":"Choose whether you're coming","giftJustTaken":"Someone else just reserved this gift. Please pick another.","thanksTitle":"Thank you!","thanksNotComing":"Your answer: can't come","youBring":"You're bringing","noGiftChosen":"No gift chosen","addToCalendar":"Add to calendar","calendarHint":"You'll get a reminder 1 day before.","changeAnswer":"Change answer","openMap":"Open in maps","errNetwork":"Check your internet connection and try again","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"months":["January","February","March","April","May","June","July","August","September","October","November","December"]}};
-// Store links: fill in once the app is published. While empty, the button opens the landing page.
-const APP_STORE_URL = '';
-const PLAY_STORE_URL = '';
-
-const CTA = {
-  az: { title: 'Siz də belə dəvətnamə yaradın!', text: 'Ad günü, toy, ev qonaqlığı — dəvətnamə, hədiyyə siyahısı və qonaqlar bir tətbiqdə. Pulsuz.',
-        ios: 'App Store-dan yüklə', android: 'Google Play-dən yüklə', soon: 'Tətbiq tezliklə App Store-da', more: 'Konfetti haqqında ətraflı',
-        lTitle: 'Hər bayram üçün hədiyyə siyahısı və dəvətnamə', lSub: 'Bir dəqiqəyə gözəl dəvətnamə hazırlayın, qonaqlara bir link göndərin və kimin gələcəyini, hansı hədiyyəni seçdiyini görün.',
-        f: ['Qonaqlar qeydiyyatsız cavab verir', 'Hədiyyələr təkrarlanmır — hər kəs fərqli hədiyyə seçir', 'Ad günü, toy, ev qonaqlığı, Yeni il və s.', 'Azərbaycan, rus və ingilis dillərində'] },
-  ru: { title: 'Создайте такое же приглашение!', text: 'День рождения, свадьба, новоселье — приглашение, список подарков и гости в одном приложении. Бесплатно.',
-        ios: 'Скачать в App Store', android: 'Скачать в Google Play', soon: 'Скоро в App Store', more: 'Подробнее о Konfetti',
-        lTitle: 'Списки подарков и приглашения для любого праздника', lSub: 'Создайте красивое приглашение за минуту, отправьте гостям одну ссылку и смотрите, кто придёт и какой подарок выбрал.',
-        f: ['Гости отвечают без регистрации', 'Подарки не повторяются — каждый выбирает свой', 'День рождения, свадьба, новоселье, Новый год и др.', 'На азербайджанском, русском и английском'] },
-  en: { title: 'Make an invitation like this!', text: 'Birthdays, weddings, housewarmings — invitations, gift lists and guests in one app. Free.',
-        ios: 'Download on the App Store', android: 'Get it on Google Play', soon: 'Coming soon to the App Store', more: 'Learn more about Konfetti',
-        lTitle: 'Gift lists and invitations for every celebration', lSub: 'Make a beautiful invitation in a minute, send guests one link, and see who is coming and which gift they picked.',
-        f: ['Guests reply without signing up', 'No duplicate gifts — everyone picks something different', 'Birthdays, weddings, housewarmings, New Year and more', 'In Azerbaijani, Russian and English'] },
-};
-const OWN = {
-  az: { allTaken: 'Siyahıdakı bütün hədiyyələr artıq seçilib. Başqa hədiyyə gətirə bilərsiniz — yazın ki, təkrarlanmasın.', check: 'Başqa hədiyyə gətirəcəyəm', label: 'Nə gətirəcəksiniz?', ph: 'Məs. kitab, puzzle, gül', need: 'Nə gətirəcəyinizi yazın', others: 'Digər qonaqlar gətirir' },
-  ru: { allTaken: 'Все подарки из списка уже выбраны. Вы можете принести свой — напишите какой, чтобы подарки не повторялись.', check: 'Принесу другой подарок', label: 'Что вы принесёте?', ph: 'Напр. книгу, пазл, цветы', need: 'Напишите, что принесёте', others: 'Другие гости принесут' },
-  en: { allTaken: 'Every gift on the list is taken. You can bring something else — write what, so gifts don\'t repeat.', check: "I'll bring a different gift", label: 'What will you bring?', ph: 'e.g. a book, a puzzle, flowers', need: 'Write what you will bring', others: 'Other guests are bringing' },
-};
-const OTHER = {
-  az: { as: (n) => `Cavab verən: ${n}`, btn: 'Başqa qonaq kimi cavab ver' },
-  ru: { as: (n) => `Ответ от: ${n}`, btn: 'Ответить за другого гостя' },
-  en: { as: (n) => `Replied as ${n}`, btn: 'Reply as another guest' },
-};
-const GREET = { az: (n) => `Salam, ${n}!`, ru: (n) => `Здравствуйте, ${n}!`, en: (n) => `Hi ${n}!` };
-const GREET_SUB = { az: 'Bu dəvətnamə sizin üçündür. Adınızı yoxlayın və cavab verin.', ru: 'Это приглашение для вас. Проверьте имя и ответьте.', en: 'This invitation is for you. Check your name and reply.' };
-const isAndroid = /android/i.test(navigator.userAgent || '');
-function storeLink() {
-  const c = CTA[lang];
-  if (isAndroid && safeUrl(PLAY_STORE_URL)) return { href: PLAY_STORE_URL, label: c.android };
-  if (safeUrl(APP_STORE_URL)) return { href: APP_STORE_URL, label: c.ios };
-  if (safeUrl(PLAY_STORE_URL)) return { href: PLAY_STORE_URL, label: c.android };
-  return null;
-}
-const DOTS = '<svg class="dots" viewBox="0 0 120 90" aria-hidden="true"><circle cx="20" cy="20" r="5" fill="#FFD45C"/><rect x="50" y="10" width="14" height="7" rx="2" fill="#fff" opacity=".8" transform="rotate(25 57 13)"/><circle cx="95" cy="28" r="6" fill="#8EC5F2"/><rect x="70" y="50" width="14" height="7" rx="2" fill="#FFD45C" transform="rotate(-20 77 53)"/><circle cx="40" cy="58" r="4" fill="#F28AA0"/><circle cx="108" cy="70" r="4" fill="#fff" opacity=".8"/></svg>';
-function ctaCard(small) {
-  const c = CTA[lang], l = storeLink();
-  const btn = l
-    ? `<a class="go" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} →</a>`
-    : `<a class="go" href="/" target="_blank" rel="noopener">${esc(c.more)} →</a><span class="soon">${esc(c.soon)}</span>`;
-  return `<section class="cta${small ? ' small' : ''}">${DOTS}<h3>${esc(c.title)}</h3><p>${esc(c.text)}</p>${btn}</section>`;
-}
-function landing() {
-  const c = CTA[lang], l = storeLink();
-  document.title = 'Konfetti';
-  return `<div class="land"><div class="scene no-kids no-candles">${SCENE}</div>
-    <h1>${esc(c.lTitle)}</h1><p class="lead">${esc(c.lSub)}</p>
-    ${c.f.map((t) => `<div class="feat"><i>✓</i><span>${esc(t)}</span></div>`).join('')}
-    <section class="cta">${DOTS}<h3>Konfetti</h3><p>${esc(c.text)}</p>
-      ${l ? `<a class="go" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} →</a>` : `<span class="soon" style="font-size:15px;padding:8px 14px">${esc(c.soon)}</span>`}
-    </section>
-    <p class="promo"><a href="/privacy/" style="color:var(--primary)">Privacy</a> · <a href="/support/" style="color:var(--primary)">Support</a><br>support@getkonfetti.app</p></div>`;
-}
-
-const EXTRA = {
-  az: { loading: 'Yüklənir…', notFound: 'Bu dəvətnamə tapılmadı. Linki yoxlayın.', promo: 'Siz də ad günü planlaşdırırsınız? <b>Konfetti</b> ilə hədiyyə siyahısı yaradın.', icsName: 'ad-gunu' },
-  ru: { loading: 'Загрузка…', notFound: 'Приглашение не найдено. Проверьте ссылку.', promo: 'Тоже планируете праздник? Создайте список подарков в <b>Konfetti</b>.', icsName: 'den-rozhdeniya' },
-  en: { loading: 'Loading…', notFound: 'This invitation was not found. Please check the link.', promo: 'Planning a party too? Make a gift list with <b>Konfetti</b>.', icsName: 'birthday' },
-};
-const ruPlural = (n, one, few, many) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; };
-const FN = {
-  turnsLine: { en: (a) => `Turns ${a}!`, az: (a) => `${a} yaşı tamam olur!`, ru: (a) => `Исполняется ${a} ${ruPlural(a, 'год', 'года', 'лет')}!` },
-  thanksComing: { en: (n) => `Your answer: coming, ${n} ${n === 1 ? 'child' : 'children'}`, az: (n) => `Cavabınız: gəlirsiniz, ${n} uşaq`, ru: (n) => `Ваш ответ: придём, ${n} ${ruPlural(n, 'ребёнок', 'ребёнка', 'детей')}` },
-  occInvite: {
-    en: { kids: "You're invited to a birthday party!", birthday: "You're invited to a birthday party!", wedding: "You're invited to our wedding!", baby: "You're invited to a baby shower!", home: "You're invited to our housewarming!", newyear: "You're invited to a New Year party!", other: "You're invited!" },
-    az: { kids: 'Sizi ad gününə dəvət edirik!', birthday: 'Sizi ad gününə dəvət edirik!', wedding: 'Sizi toyumuza dəvət edirik!', baby: 'Sizi körpə şənliyinə dəvət edirik!', home: 'Sizi ev qonaqlığına dəvət edirik!', newyear: 'Sizi Yeni il şənliyinə dəvət edirik!', other: 'Sizi dəvət edirik!' },
-    ru: { kids: 'Приглашаем на день рождения!', birthday: 'Приглашаем на день рождения!', wedding: 'Приглашаем на нашу свадьбу!', baby: 'Приглашаем на бэби-шауэр!', home: 'Приглашаем на новоселье!', newyear: 'Приглашаем на новогодний праздник!', other: 'Приглашаем вас!' },
-  },
-  occasions: {
-    en: { kids: "Kid's birthday", birthday: 'Birthday', wedding: 'Wedding', baby: 'Baby shower', home: 'Housewarming', newyear: 'New Year', other: 'Other' },
-    az: { kids: 'Uşaq ad günü', birthday: 'Ad günü', wedding: 'Toy', baby: 'Körpə şənliyi', home: 'Ev qonaqlığı', newyear: 'Yeni il', other: 'Digər' },
-    ru: { kids: 'Детский день рождения', birthday: 'День рождения', wedding: 'Свадьба', baby: 'Бэби-шауэр', home: 'Новоселье', newyear: 'Новый год', other: 'Другое' },
-  },
-  howManyPeople: { en: 'How many people?', az: 'Neçə nəfər?', ru: 'Сколько человек?' },
-  thanksComingP: { en: (n) => `Your answer: coming, ${n === 1 ? '1 person' : `${n} people`}`, az: (n) => `Cavabınız: gəlirsiniz, ${n} nəfər`, ru: (n) => `Ваш ответ: придём, ${n} ${ruPlural(n, 'человек', 'человека', 'человек')}` },
-  calendarTitle: { en: (c, a) => `Birthday: ${c} turns ${a}`, az: (c, a) => `Ad günü: ${c} — ${a} yaş`, ru: (c, a) => `День рождения: ${c}, ${a} ${ruPlural(a, 'год', 'года', 'лет')}` },
-};
-function formatWhen(lang, iso, time) {
-  const s = T[lang]; const [y, m, d] = iso.split('-').map(Number);
-  const wd = s.weekdays[new Date(y, m - 1, d).getDay()]; const cap = wd.charAt(0).toUpperCase() + wd.slice(1);
-  if (lang === 'az') return `${d} ${s.months[m - 1]}, ${wd} · saat ${time}`;
-  return `${cap}, ${d} ${s.months[m - 1]} · ${time}`;
-}
-
-// ---- Helpers -----------------------------------------------------------------
-const $ = (id) => document.getElementById(id);
-const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
-
-async function rpc(fn, args) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
-    method: 'POST',
-    headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify(args),
-  });
-  if (!res.ok) throw new Error(`rpc ${fn} ${res.status}`);
-  return res.json();
-}
-
-// ---- State -------------------------------------------------------------------
-const qs = new URLSearchParams(location.search);
-const slug = qs.get('i') || '';
-// Personal link from the host's guest list: ?g=<name>. It pre-fills the name so the reply matches the host's list.
-const invited = (qs.get('g') || '').trim().slice(0, 80);
-const browserLang = (navigator.language || 'az').slice(0, 2);
-let lang = ['az', 'ru', 'en'].includes(browserLang) ? browserLang : 'az';
-let party = null;
-let st = { name: invited || store.get('kf.name') || '', answer: null, kids: 1, optIn: false, picked: [], ownOn: false, note: '', done: false, busy: false, error: '' };
-
-function wordmark() {
-  const cols = ['#C8402B', '#5B4BC4', '#1B6B47', '#B26A00', '#3A7BB8', '#C2416A', '#5B4BC4', '#C8402B'];
-  $('word').innerHTML = 'konfetti'.split('').map((c, i) => `<span style="color:${cols[i]}">${c}</span>`).join('');
-}
-function langButtons() {
-  $('langs').innerHTML = ['az', 'ru', 'en'].map((l) => `<button class="${l === lang ? 'on' : ''}" data-lang="${l}" aria-pressed="${l === lang}">${l.toUpperCase()}</button>`).join('');
-}
-function mapsUrl(p) {
-  if (p.lat != null && p.lng != null) return `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`;
-  if (safeUrl(p.map_link)) return p.map_link;
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.place, p.address].filter(Boolean).join(', '))}`;
-}
-
-async function load(guestName) {
-  party = await rpc('get_invitation', { p_slug: slug, p_guest: guestName || null });
-  if (party && !store.get('kf.lang.' + slug)) lang = party.lang; // the invitation's own language, unless the guest switched
-}
-
-function render() {
-  document.documentElement.lang = lang;
-  langButtons();
-  const s = T[lang], x = EXTRA[lang];
-  if (!party) { $('app').innerHTML = slug ? `<p class="center muted" style="margin-top:40px">${esc(x.notFound)}</p>${ctaCard(false)}` : landing(); $('bar').hidden = true; return; }
-  const p = party;
-  const showGifts = st.answer === 'yes' || (st.answer === 'no' && st.optIn);
-  const available = p.gifts.filter((g) => !g.taken || g.mine);
-  const takenByOthers = p.gifts.filter((g) => g.taken && !g.mine);
-  const price = (v) => (v == null ? '' : `${Number(v)} ₼`);
-
-  let html = `<div class="scene${isKids() ? '' : ' no-kids'}${isKids() || occ() === 'birthday' ? '' : ' no-candles'}">${SCENE}</div>
-  <section class="hero">
-    <div class="small">${esc(FN.occInvite[lang][occ()] || s.youreInvited)}</div>
-    <h1>${esc(p.child_name)}</h1>
-    ${hasAge() ? `<div class="turns">${esc(FN.turnsLine[lang](p.age))}</div>`
-      : occ() !== 'newyear' && occ() !== 'other' ? `<div class="turns">${esc(FN.occasions[lang][occ()])}</div>` : ''}
-    <p>${esc(formatWhen(lang, p.date, p.time))}<br>${esc([p.place, p.address].filter(Boolean).join(', '))}</p>
-    ${p.message ? `<p>${esc(p.message)}</p>` : ''}
-    <a class="pill-btn" href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">${esc(s.openMap)}</a>
-  </section>`;
-
-  if (st.done) {
-    const mine = p.gifts.filter((g) => g.mine);
-    html += `<div class="tick" aria-hidden="true">✓</div>
-    <h2 class="center" style="font-size:28px">${esc(s.thanksTitle)}</h2>
-    <p class="center muted">${esc(st.answer === 'yes' ? (isKids() ? FN.thanksComing[lang] : FN.thanksComingP[lang])(st.kids) : s.thanksNotComing)}</p>
-    <div class="card"><div class="muted" style="font-weight:700;font-size:13px">${esc(s.youBring)}</div>
-      ${st.note && st.ownOn ? `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(st.note)}</div>` : ''}
-      ${mine.length ? mine.map((g) => `<div class="name" style="font-weight:700;font-size:17px;margin-top:6px">${esc(g.name)}</div><div class="muted">${esc(price(g.price))}${safeUrl(g.link) ? ` · <a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--primary)">${esc(s.viewInShop)}</a>` : ''}</div>`).join('') : (st.note && st.ownOn ? '' : `<div style="margin-top:6px">${esc(s.noGiftChosen)}</div>`)}
-    </div>
-    ${st.answer === 'yes' ? `<button class="btn dark" style="width:100%;margin-top:16px" id="ics">${esc(s.addToCalendar)}</button><p class="center muted" style="font-size:13px">${esc(s.calendarHint)}</p>` : ''}
-    <button class="btn outline" style="width:100%;margin-top:10px" id="change">${esc(s.changeAnswer)}</button>
-    <p class="center muted" style="font-size:14px;margin:14px 0 0">${esc(OTHER[lang].as(st.name))} · <button id="notme" style="border:0;background:none;color:var(--primary);font:inherit;font-weight:700;cursor:pointer;padding:6px 2px">${esc(OTHER[lang].btn)}</button></p>
-    ${ctaCard(false)}`;
-  } else {
-    html += `<div class="card">
-      ${invited ? `<h2 style="margin-bottom:4px">${esc(GREET[lang](invited))}</h2><p class="muted" style="margin:0 0 10px">${esc(GREET_SUB[lang])}</p>` : ''}
-      <label class="lbl" for="name">${esc(s.yourName)}</label>
-      <input type="text" id="name" autocomplete="name" placeholder="${esc(s.yourNamePh)}" value="${esc(st.name)}">
-    </div>
-    <div class="card">
-      <h2>${esc(s.willYouCome)}</h2>
-      <div class="row">
-        <button class="btn ${st.answer === 'yes' ? 'on' : ''}" data-answer="yes" aria-pressed="${st.answer === 'yes'}">${esc(s.yesCome)}</button>
-        <button class="btn ${st.answer === 'no' ? 'on' : ''}" data-answer="no" aria-pressed="${st.answer === 'no'}">${esc(s.noCome)}</button>
-      </div>
-      ${st.answer === 'yes' ? `<div class="stepper"><span>${esc(isKids() ? s.howManyKids : FN.howManyPeople[lang])}</span><div class="ctl"><button data-kids="-1" aria-label="−">−</button><b>${st.kids}</b><button data-kids="1" aria-label="+">+</button></div></div><div class="ok">${esc(s.seeYou)}</div>` : ''}
-      ${st.answer === 'no' ? `<p class="muted">${esc(s.sorryMiss)}</p><label class="check"><input type="checkbox" id="optin" ${st.optIn ? 'checked' : ''}> <span>${esc(s.stillSendGift)}</span></label>` : ''}
-    </div>`;
-    if (showGifts) {
-      html += `<h2 style="margin-top:22px">${esc(s.giftOptional)}</h2><p class="muted" style="margin:0">${esc(s.pickGiftHint)}</p>`;
-      if (!available.length) html += `<p class="muted">${esc(OWN[lang].allTaken)}</p>`;
-      html += available.map((g) => {
-        const on = st.picked.includes(g.id);
-        return `<div class="gift ${on ? 'sel' : ''}">
-          ${g.wanted ? `<span class="tag">${esc(s.mostWanted)}</span>` : ''}
-          <div class="name">${esc(g.name)}</div>
-          <div class="meta">${g.price != null ? `<span>${esc(price(g.price))}</span>` : ''}${safeUrl(g.link) ? `<a href="${esc(g.link)}" target="_blank" rel="noopener">${esc(s.viewInShop)}</a>` : ''}</div>
-          <button class="btn ${on ? 'picked' : 'dark'}" style="width:100%" data-gift="${esc(g.id)}" aria-pressed="${on}">${on ? '✓ ' + esc(s.selected) : esc(s.illBring)}</button>
-        </div>`;
-      }).join('');
-      const ownOn = st.ownOn || (!available.length && !!st.note);
-      html += `<div class="gift ${ownOn ? 'sel' : ''}">
-        <label class="check" style="margin-top:0"><input type="checkbox" id="ownon" ${ownOn ? 'checked' : ''}> <span style="font-weight:700">${esc(OWN[lang].check)}</span></label>
-        ${ownOn ? `<label class="lbl" for="note" style="margin-top:8px">${esc(OWN[lang].label)}</label><input type="text" id="note" maxlength="120" placeholder="${esc(OWN[lang].ph)}" value="${esc(st.note)}">` : ''}
-      </div>`;
-      if (takenByOthers.length) html += `<div class="label-up">${esc(s.alreadyTaken)}</div>` + takenByOthers.map((g) => `<div class="taken"><s>${esc(g.name)}</s><span>${esc(s.taken)}</span></div>`).join('');
-      const others = (p.others_bring || []).filter(Boolean);
-      if (others.length) html += `<div class="label-up">${esc(OWN[lang].others)}</div>` + others.map((n) => `<div class="taken"><span style="flex:1">${esc(n)}</span><span>${esc(s.taken)}</span></div>`).join('');
-    }
-  }
-  if (!st.done) html += ctaCard(true);
-  $('app').innerHTML = html;
-  $('bar').hidden = st.done;
-  $('submit').textContent = s.submitReply;
-  $('submit').disabled = st.busy;
-  $('err').textContent = st.error;
-}
-
-// ---- Events ------------------------------------------------------------------
-document.addEventListener('input', (e) => {
-  if (e.target.id === 'name') { st.name = e.target.value; st.error = ''; $('err').textContent = ''; }
-  if (e.target.id === 'note') { st.note = e.target.value; st.error = ''; $('err').textContent = ''; }
-});
-document.addEventListener('change', (e) => {
-  if (e.target.id === 'optin') { st.optIn = e.target.checked; render(); }
-  if (e.target.id === 'ownon') { st.ownOn = e.target.checked; render(); if (st.ownOn) setTimeout(() => $('note') && $('note').focus(), 0); }
-});
-document.addEventListener('click', async (e) => {
-  const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.lang) { lang = b.dataset.lang; store.set('kf.lang.' + slug, lang); return render(); }
-  if (b.dataset.answer) { st.answer = b.dataset.answer; st.error = ''; return render(); }
-  if (b.dataset.kids) { st.kids = Math.min(9, Math.max(1, st.kids + Number(b.dataset.kids))); return render(); }
-  if (b.dataset.gift) { const id = b.dataset.gift; st.picked = st.picked.includes(id) ? st.picked.filter((x) => x !== id) : [...st.picked, id]; st.error = ''; return render(); }
-  if (b.id === 'change') { st.done = false; return render(); }
-  if (b.id === 'notme') { // someone else on the same phone: start a fresh, empty reply
-    store.set('kf.name', '');
-    st = { name: '', answer: null, kids: 1, optIn: false, picked: [], ownOn: false, note: '', done: false, busy: false, error: '' };
-    try { await load(null); } catch {}
-    render(); window.scrollTo({ top: 0 }); return;
-  }
-  if (b.id === 'ics') return downloadIcs();
-  if (b.id === 'submit') return submit();
-});
-
-async function submit() {
-  const s = T[lang];
-  const name = st.name.trim();
-  if (!name) { st.error = s.enterNameFirst; return render(); }
-  if (!st.answer) { st.error = s.chooseRsvpFirst; return render(); }
-  const showGifts = st.answer === 'yes' || (st.answer === 'no' && st.optIn);
-  const note = showGifts && st.ownOn ? st.note.trim() : '';
-  if (showGifts && st.ownOn && !note) { st.error = OWN[lang].need; return render(); }
-  st.busy = true; st.error = ''; render();
-  try {
-    const args = { p_slug: slug, p_guest: name, p_coming: st.answer === 'yes', p_kids: st.answer === 'yes' ? st.kids : 0, p_gift_ids: showGifts ? st.picked : [] };
-    if (note) args.p_note = note; // only sent when used, so the page also works before database update 3
-    const r = await rpc('submit_reply', args);
-    store.set('kf.name', name);
-    await load(name);
-    if (r && r.taken && r.taken.length) {
-      st.picked = party.gifts.filter((g) => g.mine).map((g) => g.id);
-      st.error = s.giftJustTaken;
-    } else {
-      st.done = true;
-    }
-  } catch (err) {
-    st.error = s.errNetwork;
-  }
-  st.busy = false;
-  render();
-  if (st.done) window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Occasion helpers. Invitations made before occasions existed are kids' birthdays.
-const OCCS = ['kids', 'birthday', 'wedding', 'baby', 'home', 'newyear', 'other'];
-const occ = () => (party && OCCS.includes(party.occasion) ? party.occasion : 'kids');
-const isKids = () => occ() === 'kids';
-const hasAge = () => (occ() === 'kids' || occ() === 'birthday') && Number(party.age) > 0;
-function calTitle() {
-  const p = party, o = occ();
-  if (hasAge()) return FN.calendarTitle[lang](p.child_name, p.age);
-  if (o === 'other') return p.child_name;
-  return `${FN.occasions[lang][o]}: ${p.child_name}`;
-}
-
-function downloadIcs() {
-  const p = party; const [y, m, d] = p.date.split('-').map(Number); const [hh, mm] = p.time.split(':').map(Number);
-  const pad = (n) => String(n).padStart(2, '0');
-  const start = `${y}${pad(m)}${pad(d)}T${pad(hh)}${pad(mm)}00`;
-  const endD = new Date(y, m - 1, d, hh + 3, mm);
-  const end = `${endD.getFullYear()}${pad(endD.getMonth() + 1)}${pad(endD.getDate())}T${pad(endD.getHours())}${pad(endD.getMinutes())}00`;
-  const clean = (t) => String(t).replace(/[\\,;]/g, (c) => '\\' + c).replace(/\n/g, '\\n');
-  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Konfetti//AZ', 'BEGIN:VEVENT', `UID:${slug}@konfetti`, `DTSTAMP:${start}`,
-    `DTSTART:${start}`, `DTEND:${end}`, `SUMMARY:${clean(calTitle())}`,
-    `LOCATION:${clean([p.place, p.address].filter(Boolean).join(', '))}`, `DESCRIPTION:${clean(mapsUrl(p))}`,
-    'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:Reminder', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
-  a.download = `${EXTRA[lang].icsName}.ics`; document.body.appendChild(a); a.click(); a.remove();
-}
-
-// ---- Start -------------------------------------------------------------------
-(async () => {
-  wordmark(); langButtons();
-  $('loading').textContent = EXTRA[lang].loading;
-  if (!slug) { party = null; return render(); }
-  try {
-    await load(st.name || null);
-    const saved = store.get('kf.lang.' + slug); if (saved) lang = saved;
-    if (party && party.my_reply) { // returning guest: show their saved answer
-      st.answer = party.my_reply.coming ? 'yes' : 'no';
-      st.kids = party.my_reply.kids || 1;
-      st.picked = party.gifts.filter((g) => g.mine).map((g) => g.id);
-      st.note = party.my_reply.note || '';
-      st.ownOn = !!st.note;
-      st.optIn = !party.my_reply.coming && (st.picked.length > 0 || st.ownOn);
-      st.done = true;
-    }
-    document.title = party ? `${party.child_name} — Konfetti` : 'Konfetti';
-  } catch {
-    $('app').innerHTML = `<p class="center muted" style="margin-top:40px">${esc(T[lang].errNetwork)}</p>`;
-    return;
-  }
-  render();
-})();
+  const pick = (l) => {
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-l]').forEach((e) => e.classList.toggle('show', e.dataset.l === l));
+    document.querySelectorAll('[data-set]').forEach((b) => b.classList.toggle('on', b.dataset.set === l));
+    try { localStorage.setItem('kf.site.lang', l); } catch (e) {}
+  };
+  document.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click', () => pick(b.dataset.set)));
+  let l = new URLSearchParams(location.search).get('lang');
+  try { l = l || localStorage.getItem('kf.site.lang'); } catch (e) {}
+  l = l || (navigator.language || 'az').slice(0, 2);
+  pick(['az', 'ru', 'en'].includes(l) ? l : 'az');
 </script>
 </body>
 </html>
